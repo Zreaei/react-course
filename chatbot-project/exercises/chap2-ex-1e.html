@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 2 Exercises</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+    <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+      const container = document.querySelector('.js-container');
+
+      function App(){
+        return (
+          <>
+            <p>Cotton socks</p>
+            <p>Price: $10.90</p>
+            <button>Add to cart</button>
+          </>
+        );
+      };
+
+      const root = ReactDOM.createRoot(container);
+      root.render(<App />);
+    </script> 
+  </body>
+</html> 

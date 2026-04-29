@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>React Basics</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+    <div class="learn-page"></div>
+
+    <script src="react-basics.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+      const container = document.querySelector('.js-container');
+      const learnPage = document.querySelector('.learn-page');
+      
+      const boldText = <strong>for React</strong>;
+
+      const divContainer = (
+        <div>
+          <h1>Hello</h1>
+          <p>Welcome to this course, in this course, we'll be learning about {9*2} methods of react</p>
+        </div>
+      );
+
+      ReactDOM.createRoot(container).render('Welcome to SuperSimpleDev React Course');
+      ReactDOM.createRoot(learnPage).render(divContainer);
+    </script> 
+  </body>
+</html> 
