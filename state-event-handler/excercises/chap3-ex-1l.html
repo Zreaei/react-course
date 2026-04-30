@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 3 Exercise</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+    <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
+    <script src="https://unpkg.com/supersimpledev/chatbot.js"></script>
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+      const container = document.querySelector('.js-container');
+      
+      // Added chatMessages & setChatMessages props for sendMessage to use
+      function ChatInput({ chatMessages, setChatMessages }) {
+        // Initial value of the inputs (which is none or '')
+        const [inputText, setInputText] = React.useState('');
+
+        // Function to save the inputs
+        function saveInputText(event) {
+          // event.target gives the element thats being typed (which is input element)
+          // .value is needeed to get the text
+          // console.log(event.target.value);
+          setInputText(event.target.value);
+        }
+
+        // Function to send the message
+        async function sendMessage() {
+          const newChatMessages = [
+            // In react, do not modify data directly, instead make a copy and then modify the copy
+            // Spread Operator (take the values from an array, and copy them to a new array)
+            // Used alot in React tutorial/docs
+            ...chatMessages,
+            {
+              message: inputText,
+              sender: 'user',
+              id: crypto.randomUUID()
+            }
+          ]
+
+          // Clear the input
+          setInputText('');
+
+          // Display the loading... string
+          setChatMessages([
+            ...newChatMessages,
+            {
+              message: 'Loading...',
+              sender: 'chatbot',
+              id: crypto.randomUUID()
+            }
+          ]);
+
+          // Getting the response from external library
+          const response = await Chatbot.getResponseAsync(inputText);
+          setChatMessages([
+            ...newChatMessages,
+            {
+              message: response,
+              sender: 'chatbot',
+              id: crypto.randomUUID()
+            }
+          ]);
+        }
+
+        function keyDown(event) {
+          if (event.key === 'Enter') {
+            sendMessage();
+          }
+
+          if (event.key === 'Escape') {
+            setInputText('');
+          }
+        }
+
+        return (
+        <>
+          <input
+            type="text"
+            placeholder="Send a message to Chatbot"
+            size="30"
+            // onChange runs a function when the text changed inside the input
+            onChange={saveInputText}
+            // Control text inside the input (Controlled Input)
+            value={inputText}
+            onKeyDown={keyDown}
+          />
+          <button onClick={sendMessage}>Send</button>
+        </>
+        );
+      };
+      
+      function ChatMessage({ message, sender }) {
+        // const message = props.message;
+        // const sender = props.sender;
+        // const { message, sender } = props;
+
+        /*
+        if (sender === "chatbot") {
+          return (
+            <div>
+              <img src="img/robot.png" width="50" alt="chatbot" />
+              {message}
+          </div>
+          );
+        };
+        */
+
+        return (
+          <div>
+            {sender === "chatbot" && (
+              <img src="../img/robot.png" width="50" />
+            )}
+            {message}
+            {sender === "user" && (
+              <img src="../img/user.png" width="50" />
+            )}
+          </div>
+        );
+      };
+
+      // New components for the chat messages to generate HTML
+      function ChatMessages({ chatMessages }) {
+        return (
+          <>
+            {/* New parameter inside the props (chatMessage)
+            .map takes each value from the array and convert it to a new value 
+            This is a common shortcut used in React Tutorial/Docs*/}
+            {chatMessages.map((chatMessage) => {
+              return (
+                <ChatMessage 
+                  message={chatMessage.message}
+                  sender={chatMessage.sender}
+                  key={chatMessage.id}
+                />
+              );
+            })}
+          </>
+        )
+      }
+
+      function App() {
+        // array of object using state
+        // This is the shortcut for useState's values (Array Destructuring)
+        // Moved the state from ChatMessages to App for global access (Lifting the State Up)
+        const [chatMessages, setChatMessages] = React.useState([{
+          message: "Hello Chatbot",
+          sender: "user",
+          id: "id1"
+        }, {
+          message: "Hello! How can i help you?",
+          sender: "chatbot",
+          id: "id2"
+        }, {
+          message: "Can you get me today's date?",
+          sender: "user",
+          id: "id3"
+        },{
+          message: "Today is 30th April",
+          sender: "chatbot",
+          id: "id4"
+        }])
+
+        // This is useState's values (without Array Destructuring)
+
+        // Current data of the array using useState
+        // const chatMessages = array[0];
+
+        // Updater function of useState
+        // const setChatMessages = array[1];
+
+        // const [chatMessages, setChatMessages] = array;
+
+        return (
+          <>
+            <ChatInput
+              chatMessages={chatMessages}
+              setChatMessages={setChatMessages}
+            />
+            <ChatMessages
+              chatMessages={chatMessages}
+            />
+          </>
+        )
+      }
+
+      const root = ReactDOM.createRoot(container);
+      root.render(<App />);
+    </script> 
+  </body>
+</html> 

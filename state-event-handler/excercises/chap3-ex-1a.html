@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 3 Exercise</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+    <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+      const container = document.querySelector('.js-container');
+      
+      function App() {
+        function consoleClick() {
+          console.log("Clicked")
+        }
+
+        return (
+          <button onClick={consoleClick}>
+            Clicked 0 times
+          </button>
+        );
+      };
+
+      const root = ReactDOM.createRoot(container);
+      root.render(<App />);
+    </script> 
+  </body>
+</html> 
